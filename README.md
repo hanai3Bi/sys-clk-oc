@@ -1,6 +1,18 @@
-# sys-clk
+
+# sys-clk-oc
 
 Switch sysmodule allowing you to set cpu/gpu/mem clocks according to the running application and docked state.
+
+## Exclusive Features for sys-clk-oc
+
+### Real Volts
+voltage readings from devices: CPU/GPU/MEM/SOC
+### Real Temps 
+temperature readings from thermal sensors: CPU/GPU/MEM/PLL/AO
+### Cpu volt bug fix
+fixes bug present in official driver
+### Reversenx sync
+automatically changes profile when reversenx state is changed
 
 ## Installation
 
@@ -108,18 +120,29 @@ The `[values]` section allows you to alter timings in sys-clk, you should not ne
 |**power_log_interval_ms**| Defines how often sys-clk logs power usage, in milliseconds (`0` to disable)  | 0 ms    |
 |**csv_write_interval_ms**| Defines how often sys-clk writes to the CSV, in milliseconds (`0` to disable) | 0 ms    |
 |**poll_interval_ms**     | Defines how fast sys-clk checks and applies profiles, in milliseconds         | 300 ms  |
+|**uncapped_clocks**      | Removes clock cappings        												  | OFF  	|
+|**override_boost_mode**  | Overrides official boost mode with user set profile clocks      			  | OFF  	|
+|**auto_cpu_boost**  	  | Sets cpu clock to boost clock when core#3 load ≥ 90%      					  | OFF  	|
+|**sync_reversenx**  	  | Overrides profile to match reversenx state      			  			      | ON  	|
 
 
 ## Capping
 
 To protect the battery from excessive strain, clocks requested from config may be capped before applying, depending on your current profile:
 
+### Erista:
 |       | Handheld | Charging (USB) | Charging (Official) | Docked |
 |:-----:|:--------:|:--------------:|:-------------------:|:------:|
 |**MEM**| -        | -              | -                   | -      |
-|**CPU**| -        | -              | -                   | -      |
-|**GPU**| 460 MHz* | 768 MHz        | -                   | -      |
-*\* GPU handheld max for Mariko is increased to 614 MHz*
+|**CPU**| 1785 MHz | 1785 MHz       | -                   | -      |
+|**GPU**| 460 MHz  | 768 MHz        | -                   | -      |
+
+### Mariko:
+|       | Handheld | Charging (USB) | Charging (Official) | Docked |
+|:-----:|:--------:|:--------------:|:-------------------:|:------:|
+|**MEM**| -        | -              | -                   | -      |
+|**CPU**| 1963 MHz | 1963 MHz       | -                   | -      |
+|**GPU**| 768 MHz  | 921 MHz        | -                   | -      |
 
 ## Clock table (MHz)
 
@@ -159,5 +182,3 @@ To protect the battery from excessive strain, clocks requested from config may b
 * 76 → boost mode
 
 **Notes:**
-1. GPU overclock is capped at 460MHz in handheld and capped at 768MHz if charging, unless you're using the official charger.
-2. Clocks higher than 768MHz need the official charger is plugged in.
